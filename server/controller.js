@@ -1,3 +1,5 @@
+const { getByAltText, findByAltText } = require("@testing-library/react");
+
 module.exports = {
     getList: (req,res)=>{
         const db = req.app.get('db');
@@ -7,6 +9,17 @@ module.exports = {
             }).catch(err=>{
                 console.log(err);
                 res.status(500).send("Error getting data list");
+            })
+    },
+    getSingle: (req,res)=>{
+        const {id} = req.params;
+        const db = req.app.get('db');
+        db.get_single({id})
+            .then((product)=>{
+                res.status(200).send(product);
+            }).catch(err=>{
+                console.log(err);
+                res.status(500).send("ERROR GETTING SINGLE PRODUCT");
             })
     },
     createProduct: (req,res)=>{

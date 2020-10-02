@@ -14,6 +14,9 @@ const {SERVER_PORT,CONNECTION_STRING} = process.env;
 //GET LIST
 app.get('/api/inventory',controller.getList)
 
+//GET SINGLE
+app.get('/api/inventory/:id',controller.getSingle)
+
 //ADD PRODUCT
 app.post('/api/inventory',controller.createProduct)
 

@@ -1,5 +1,12 @@
 #app-flex{
   display: flex;
   width: 100%;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: center;
+}
+.container{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 }

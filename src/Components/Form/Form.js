@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, {Component} from 'react';
+import { Link, Redirect } from 'react-router-dom';
 import './Form.css';
 class Form extends Component{
     constructor(){
@@ -12,26 +13,37 @@ class Form extends Component{
         }
     }
 
-    componentDidUpdate(old){
-        if(old !== this.props){
-            this.setState({current: this.props.current});
-            if(this.props.current !== null){
-                const obj = this.props.inventory.find(x => x.id === this.props.current);
-                this.setState({
-                    name: obj.name,
-                    price: obj.price,
-                    imgurl: obj.img
-                })
-            }
+    componentDidMount(){
+        if(this.props.match.params.id){
+            const id = this.props.match.params.id;
+            this.getSingle(id);
         }
     }
 
+    componentDidUpdate(old){
+        if(old !== this.props){
+            this.clearInputs();
+        }
+    }
     clearInputs = ()=>{
         this.setState({
             name: '',
             price: 0,
             imgurl: ''
         })
+    }
+
+    getSingle = (id)=>{
+        axios.get(`/api/inventory/${id}`)
+            .then(res=>{
+                let data = res.data[0];
+                this.setState({
+                    name: data.name,
+                    price: data.price,
+                    imgurl: data.img,
+                    current: id
+                });
+            }).catch(err=>console.log(err));
     }
 
     handleChange = (key,val)=>{
@@ -47,9 +59,8 @@ class Form extends Component{
             img: this.state.imgurl
         };
         axios.post('api/inventory',data).then(res=>{
-            this.props.getList();
+            this.props.history.goBack();
         }).catch(err=>console.log(err));
-        this.clearInputs();
     }
 
     updateProduct = ()=>{
@@ -60,15 +71,12 @@ class Form extends Component{
         };
         axios.put(`api/inventory/${this.state.current}`,data)
         .then(()=>{
-            this.props.getList();
-            this.props.setCurrent(null);
-            this.clearInputs();
+            this.props.history.goBack();
         }).catch(err=>console.log(err));
     }
 
     render(){
         let url= "";
-
         let add = <button onClick={this.addProduct}>Add to Inventory</button>;
         if(this.state.current !== null){
             add = <button onClick={this.updateProduct}>Save Changes</button>;
@@ -95,7 +103,7 @@ class Form extends Component{
                     <input type='text' pattern='[0-9]*' value={this.state.price} onChange={(e)=>this.handleChange('price',e.target.value)}/>
                 </span>
                 <span id='form-buttons'>
-                    <button onClick={this.clearInputs}>Cancel</button>
+                    <button onClick={this.props.history.goBack}>Cancel</button>
                     {add}
                 </span>
             </div>

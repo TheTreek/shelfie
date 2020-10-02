@@ -36,3 +36,20 @@
     padding: 20px;
     box-sizing: border-box;
 }
+
+.product-buttons{
+    display:flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.product-buttons button{
+    background-color: #47D581;
+    color: black;
+    border-radius: 10px;
+    padding: 7px;
+    border: none;
+    font-size: .8em;
+    margin:10px;
+    cursor: pointer;
+}

@@ -5,17 +5,35 @@ import './Dashboard.css'
 
 class Dashboard extends Component{
 
+    constructor(){
+        super();
+        this.state = {
+            inventory: []
+        }
+    }
+
+    componentDidMount(){
+        this.getList();
+    }
+
     deleteItem = (id)=>{
         axios.delete(`/api/inventory/${id}`)
             .then(()=>{
-                this.props.getList();
+                this.getList();
             }).catch(err=>console.log(err));
     }
 
+    getList = ()=>{
+        axios.get('/api/inventory')
+          .then(res=>{
+            this.setState({inventory: res.data})
+          }).catch(err=>console.log(err))
+      }
+
     render(){
-        const data = this.props.inventory.map((el,i)=>{
+        const data = this.state.inventory.map((el,i)=>{
             return(
-                <Product key={i} val={el} setCurrent={this.props.setCurrent} deleteItem={this.deleteItem}/>
+                <Product key={i} val={el} deleteItem={this.deleteItem}/>
             );
         });
         return(
