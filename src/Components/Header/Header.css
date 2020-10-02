@@ -1,0 +1,17 @@
+header{
+    background-color: #AB2A19;
+    position: sticky;
+    top: 0px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: white;
+}
+#header-title{
+    font-weight: 400;
+}
+#header-logo{
+    height: 50px;
+    margin: 25px;
+    margin-left: 75px;
+}
